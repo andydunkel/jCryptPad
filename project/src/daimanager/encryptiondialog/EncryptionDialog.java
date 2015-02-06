@@ -486,7 +486,7 @@ public class EncryptionDialog extends javax.swing.JFrame {
 	    
 	    int returnVal = chooser.showOpenDialog(this);
 	    
-	    //Benutzer hat eine Datei ausgewählt
+	    //User selected a file
 	    if(returnVal == JFileChooser.APPROVE_OPTION) 
 	    {
                 loadFile(chooser.getSelectedFile().getAbsolutePath());

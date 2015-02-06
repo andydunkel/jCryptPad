@@ -28,7 +28,7 @@ public class PasswordGeneratorDialog extends javax.swing.JDialog {
         
         listPasswords.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
-        //Create Model für List
+        //Create Model for List
         listPasswords.setModel(new DefaultListModel());
         
         //add popup to list

@@ -21,7 +21,7 @@ public class PasswordGenerator
     private boolean capitalsAllowed = false;
     
     private final String chars = "abcdefghijklmnopqrstuvwxyz";
-    private final String specialChars = "!\"ง$%&/()[]{}+*#'-.,><|";
+    private final String specialChars = "!\"ยง$%&/()[]{}+*#'-.,><|";
     private final String capitalChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private final String numberChars = "0123456789";
     

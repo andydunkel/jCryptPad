@@ -16,6 +16,7 @@ package daimanager;
 import daimanager.tree.NodeMoveTransferHandler;
 import daimanager.encryptiondialog.EncryptionDialog;
 import daimanager.tree.TreeDropTarget;
+import interfaces.IConsts;
 import interfaces.IDataModel;
 import interfaces.IObserver;
 import javax.swing.ImageIcon;
@@ -805,7 +806,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
         if (res != JOptionPane.CANCEL_OPTION)
         {
             JFileChooser chooser = new JFileChooser();
-	    FileNameExtensionFilter filter = new FileNameExtensionFilter("jCryptPad file", "jcrypt");
+	    FileNameExtensionFilter filter = new FileNameExtensionFilter(IConsts.APPNAME + " file (*." + IConsts.FILE_EXT + ")");
 	    
 	    chooser.setFileFilter(filter);
             res = chooser.showOpenDialog(this);
@@ -911,7 +912,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
         if (((saved == false) || (showDlg == true)) && (resPw == true))
         {
             JFileChooser chooser = new JFileChooser();
-	    FileNameExtensionFilter filter = new FileNameExtensionFilter("jCryptPad file", "jcrypt");
+	    FileNameExtensionFilter filter = new FileNameExtensionFilter(IConsts.APPNAME + " file (*." + IConsts.FILE_EXT + ")", IConsts.FILE_EXT);
 	    
 	    chooser.setFileFilter(filter);
             returnval = chooser.showSaveDialog(this);
@@ -919,6 +920,8 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
 	    //user choosed a file
 	    if(returnval == JFileChooser.APPROVE_OPTION) 
 	    {		    	
+                
+               
                saveFile(chooser.getSelectedFile().getAbsolutePath());	    
             }
         } else
@@ -962,7 +965,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
         model = new DataModel();
         model.subcribe(this);
         jNavTree.setModel(model.getTreeModel());
-        this.setTitle(APPNAME +  " - untitled.dacrypt");
+        this.setTitle(APPNAME +  " - untitled." + IConsts.FILE_EXT);
     }
     
     /**
