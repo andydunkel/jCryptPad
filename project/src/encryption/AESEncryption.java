@@ -8,10 +8,6 @@ import java.security.SecureRandom;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 
-import sun.misc.BASE64Decoder;      //should be replaced
-import sun.misc.BASE64Encoder;
-
-
 /**
  * AESEncryption.java
  * 
@@ -106,21 +102,19 @@ public class AESEncryption implements IEncryption
 	
     private String base64encode(byte[] in)
     {
-        BASE64Encoder e = new BASE64Encoder();
-        String out = new String(e.encode(in));
+        String out = new String(Base64.encodeBytes(in));
         return out;
     }
 	
     private byte[] base64decode(String crypted)
-    {
-            BASE64Decoder e = new BASE64Decoder();
-            byte[] b = null;
-            try {
-                    b = e.decodeBuffer(crypted);
-            } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-            }
-            return b;
+    {               
+        byte[] b = null;        
+        
+        try {
+            b = Base64.decode(crypted);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return b;
     }
 }

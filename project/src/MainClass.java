@@ -13,7 +13,6 @@
 import daimanager.DataModel;
 import daimanager.MainWindow;
 import daimanager.SplashScreen;
-import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 /**

@@ -806,7 +806,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
         if (res != JOptionPane.CANCEL_OPTION)
         {
             JFileChooser chooser = new JFileChooser();
-	    FileNameExtensionFilter filter = new FileNameExtensionFilter(IConsts.APPNAME + " file (*." + IConsts.FILE_EXT + ")");
+	    FileNameExtensionFilter filter = new FileNameExtensionFilter(IConsts.APPNAME + " file (*." + IConsts.FILE_EXT + ")", IConsts.FILE_EXT);
 	    
 	    chooser.setFileFilter(filter);
             res = chooser.showOpenDialog(this);
