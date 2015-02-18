@@ -16,9 +16,13 @@ package daimanager;
 import daimanager.tree.NodeMoveTransferHandler;
 import daimanager.encryptiondialog.EncryptionDialog;
 import daimanager.tree.TreeDropTarget;
+import importers.OnePasswordCVSImporter;
 import interfaces.IConsts;
 import interfaces.IDataModel;
 import interfaces.IObserver;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -151,6 +155,8 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
         jSeparator6 = new javax.swing.JSeparator();
         itemPasswordGenerator = new javax.swing.JMenuItem();
         itemTextEncryption = new javax.swing.JMenuItem();
+        mnuImport = new javax.swing.JMenu();
+        mnuImport1Password = new javax.swing.JMenuItem();
         mnuHelp = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
@@ -223,7 +229,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
 
         jSplitPane1.setLeftComponent(jScrollPane1);
 
-        jEdit.setFont(new java.awt.Font("Courier New", 0, 11));
+        jEdit.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
         jScrollPane2.setViewportView(jEdit);
 
         jSplitPane1.setRightComponent(jScrollPane2);
@@ -514,6 +520,18 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
 
         jMainMenu.add(mnuEncryption);
 
+        mnuImport.setText("Import");
+
+        mnuImport1Password.setText("Import 1Password CVS File");
+        mnuImport1Password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuImport1PasswordActionPerformed(evt);
+            }
+        });
+        mnuImport.add(mnuImport1Password);
+
+        jMainMenu.add(mnuImport);
+
         mnuHelp.setMnemonic('h');
         mnuHelp.setText("Help");
 
@@ -738,6 +756,25 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
           System.exit(0);
         } 
     }//GEN-LAST:event_onWindowClose
+
+    private void mnuImport1PasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuImport1PasswordActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("1Password CSV file (*.csv)", "csv");
+
+        chooser.setFileFilter(filter);
+        int returnval = chooser.showSaveDialog(this);
+
+        //user choosed a file
+        if(returnval == JFileChooser.APPROVE_OPTION) 
+        {		    	
+            try {
+                OnePasswordCVSImporter imp = new OnePasswordCVSImporter(chooser.getSelectedFile().getAbsolutePath());
+                imp.importData();
+            } catch (IOException ex) {
+                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_mnuImport1PasswordActionPerformed
     
 
     
@@ -786,6 +823,8 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
     private javax.swing.JMenu mnuEncryption;
     private javax.swing.JMenu mnuFile;
     private javax.swing.JMenu mnuHelp;
+    private javax.swing.JMenu mnuImport;
+    private javax.swing.JMenuItem mnuImport1Password;
     private javax.swing.JMenuItem popupDeleteItem;
     private javax.swing.JMenuItem popupEditNode;
     private javax.swing.JMenuItem popupNewChildNode;
