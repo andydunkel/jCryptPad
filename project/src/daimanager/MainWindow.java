@@ -16,7 +16,8 @@ package daimanager;
 import daimanager.tree.NodeMoveTransferHandler;
 import daimanager.encryptiondialog.EncryptionDialog;
 import daimanager.tree.TreeDropTarget;
-import importers.OnePasswordCVSImporter;
+import importers.OnePassword.OnePasswordCVSImporter;
+import importers.OnePassword.OnePasswordGuiHelper;
 import interfaces.IConsts;
 import interfaces.IDataModel;
 import interfaces.IObserver;
@@ -213,6 +214,9 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
                 onWindowClose(evt);
             }
         });
+
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         jNavTree.setAutoscrolls(true);
         jNavTree.setDragEnabled(true);
@@ -762,7 +766,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
         FileNameExtensionFilter filter = new FileNameExtensionFilter("1Password CSV file (*.csv)", "csv");
 
         chooser.setFileFilter(filter);
-        int returnval = chooser.showSaveDialog(this);
+        int returnval = chooser.showOpenDialog(this);
 
         //user choosed a file
         if(returnval == JFileChooser.APPROVE_OPTION) 
@@ -770,6 +774,14 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
             try {
                 OnePasswordCVSImporter imp = new OnePasswordCVSImporter(chooser.getSelectedFile().getAbsolutePath());
                 imp.importData();
+                
+                //add child node 
+                String fileName = chooser.getSelectedFile().getName();
+                EntryTreeNode node = getModel().addNode(null, fileName);
+                OnePasswordGuiHelper helper = new OnePasswordGuiHelper();
+                helper.importNodes(imp, fileName, node, getModel());
+                
+                
             } catch (IOException ex) {
                 Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
             }

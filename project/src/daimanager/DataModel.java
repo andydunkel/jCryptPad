@@ -66,23 +66,28 @@ public class DataModel implements IDataModel
     /**
      * Adds a node to another nodel, if no father node is given
      * the node will be added to the root node
-     * @param father - Father node (can be null)
+     * @param parent - Father node (can be null)
      * @param nodeTitle - Caption of the new node
      * @return
      */
     @Override
-    public EntryTreeNode addNode(EntryTreeNode father, String nodeTitle) 
+    public EntryTreeNode addNode(EntryTreeNode parent, String nodeTitle) 
     {                
-        if (father != null)
+        EntryTreeNode result;
+        
+        if (parent != null)
         {
-            father.add(new EntryTreeNode(nodeTitle));            
+            parent.add(new EntryTreeNode(nodeTitle));            
+            result = (EntryTreeNode) parent.getLastChild();
+            
         } else
         {
             rootNode.add(new EntryTreeNode(nodeTitle));
+            result = (EntryTreeNode) rootNode.getLastChild();
         }
              
         refreshObservers();        
-        return (EntryTreeNode) rootNode.getLastChild();
+        return result;
     }
 
     /**

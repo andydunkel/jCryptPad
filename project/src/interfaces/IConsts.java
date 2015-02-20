@@ -9,4 +9,6 @@ public interface IConsts {
     String APPNAME = "jCryptPad";
     String FILE_EXT = "jcryptpad";
     
+    String CRLF = "\r\n";
+    
 }
