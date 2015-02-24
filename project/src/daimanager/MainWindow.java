@@ -21,6 +21,7 @@ import importers.OnePassword.OnePasswordGuiHelper;
 import interfaces.IConsts;
 import interfaces.IDataModel;
 import interfaces.IObserver;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,6 +46,8 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
     /** Creates new form MainWindows */
     public MainWindow(IDataModel model) {
         initComponents();
+       
+        jNavTree.setPreferredSize(null);
         
         this.model = model;
         this.model.subcribe(this);       
@@ -215,14 +218,14 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
             }
         });
 
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jSplitPane1.setDividerLocation(240);
 
         jNavTree.setAutoscrolls(true);
         jNavTree.setDragEnabled(true);
         jNavTree.setMaximumSize(new java.awt.Dimension(32000, 32000));
         jNavTree.setMinimumSize(new java.awt.Dimension(200, 300));
         jNavTree.setPreferredSize(new java.awt.Dimension(150, 64));
+        jNavTree.setRequestFocusEnabled(false);
         jNavTree.setShowsRootHandles(true);
         jNavTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
@@ -780,6 +783,8 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
                 EntryTreeNode node = getModel().addNode(null, fileName);
                 OnePasswordGuiHelper helper = new OnePasswordGuiHelper();
                 helper.importNodes(imp, fileName, node, getModel());
+                
+                jScrollPane1.validate();
                 
                 
             } catch (IOException ex) {
