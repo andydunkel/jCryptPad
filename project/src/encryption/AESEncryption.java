@@ -23,6 +23,13 @@ import javax.crypto.KeyGenerator;
  */
 public class AESEncryption implements IEncryption 
 {
+    private final static int KEY_SIZE = 128;
+    private final static String ENCODING = "UTF-8";
+    private final static String HASH_ALGORITHM = "MD5";
+    private final static String ENC_ALGORITHM = "AES";
+    private final static String TRANSFORMATION =  "AES/ECB/PKCS5Padding";
+    private final static String SEC_RANDOM = "SHA1PRNG";
+    
     /**
      * Encrypts a message with a passphrase
      * 
@@ -39,24 +46,27 @@ public class AESEncryption implements IEncryption
         * make an md5 of the passphrase and use that as password
         */        
        MessageDigest md;
-       md = MessageDigest.getInstance("MD5");
+       md = MessageDigest.getInstance(HASH_ALGORITHM);
        
-       md.update(passphrase.getBytes("UTF-8"));
+       md.update(passphrase.getBytes(ENCODING));
        
        byte digest[] = md.digest();
        String digestString = base64encode(digest);
        System.out.println(digestString);
        //----------
        
-       SecureRandom sr = new SecureRandom(digestString.getBytes());
-       KeyGenerator kGen = KeyGenerator.getInstance("AES");
-       kGen.init(128,sr);
+       SecureRandom sr = SecureRandom.getInstance(SEC_RANDOM);
+       sr.setSeed(digestString.getBytes());
+       
+       KeyGenerator kGen = KeyGenerator.getInstance(ENC_ALGORITHM);
+       kGen.init(KEY_SIZE, sr);
        Key key = kGen.generateKey();
-       Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+       
+       Cipher cipher = Cipher.getInstance(TRANSFORMATION);
 
        // encrypt
        cipher.init(Cipher.ENCRYPT_MODE,key);
-       byte[] bIn = cipher.doFinal(message.getBytes("UTF-8"));
+       byte[] bIn = cipher.doFinal(message.getBytes(ENCODING));
        
        // convert encrypted bytes into string
        String base64Encoded = base64encode(bIn);// for store use, so must convert to string
@@ -76,26 +86,28 @@ public class AESEncryption implements IEncryption
     public String decryptString(String passphrase, String crypted) throws Exception
     {
        MessageDigest md;
-       md = MessageDigest.getInstance("MD5");
+       md = MessageDigest.getInstance(HASH_ALGORITHM);
        
-       md.update(passphrase.getBytes("UTF-8"));
+       md.update(passphrase.getBytes(ENCODING));
        
        byte digest[] = md.digest();
        String digestString = base64encode(digest);
        System.out.println(digestString);
        
-       SecureRandom sr = new SecureRandom(digestString.getBytes());
-       KeyGenerator kGen = KeyGenerator.getInstance("AES");
-       kGen.init(128,sr);
+       SecureRandom sr = SecureRandom.getInstance(SEC_RANDOM);
+       sr.setSeed(digestString.getBytes());       
+       
+       KeyGenerator kGen = KeyGenerator.getInstance(ENC_ALGORITHM);
+       kGen.init(KEY_SIZE,sr);
        Key key = kGen.generateKey();
-       Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");       
+       Cipher cipher = Cipher.getInstance(TRANSFORMATION);       
 
        // decrypt
        cipher.init(Cipher.DECRYPT_MODE, key); 
        byte[] cryptString = base64decode(crypted);     
        byte[] bOut = cipher.doFinal(cryptString);
        
-       String outString = new String(bOut, "UTF-8");
+       String outString = new String(bOut, ENCODING);
        
        return outString;
     }
