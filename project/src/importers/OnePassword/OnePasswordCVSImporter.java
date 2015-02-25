@@ -8,7 +8,9 @@ package importers.OnePassword;
 
 import importers.ImportHelper;
 import java.io.IOException;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,10 +30,10 @@ public class OnePasswordCVSImporter {
     
     private final String fileName;
     
-    private final List<OnePasswordEntry> listSecureNotes = new ArrayList<OnePasswordEntry>();
-    private final List<OnePasswordEntry> listPasswords = new ArrayList<OnePasswordEntry>();
-    private final List<OnePasswordEntry> listSoftware = new ArrayList<OnePasswordEntry>();   
-    private final List<OnePasswordEntry> listLogin = new ArrayList<OnePasswordEntry>();   
+    private final List<OnePasswordEntry> listSecureNotes = new ArrayList<>();
+    private final List<OnePasswordEntry> listPasswords = new ArrayList<>();
+    private final List<OnePasswordEntry> listSoftware = new ArrayList<>();   
+    private final List<OnePasswordEntry> listLogin = new ArrayList<>();   
 
     
     private OnePasswordEntry currentEntry = new OnePasswordEntry();
@@ -67,9 +69,13 @@ public class OnePasswordCVSImporter {
             if (parseChar()) {
                 //normal character
                 currentField += current;
-            }
-                     
-        }            
+            }                     
+        }    
+        
+        sortList(this.listLogin);
+        sortList(this.listPasswords);
+        sortList(this.listSecureNotes);
+        sortList(this.listSoftware);
     }
     
     /**
@@ -78,7 +84,7 @@ public class OnePasswordCVSImporter {
      * @param row 
      */
     private void addField() {
-        System.out.println("Content: " + currentField + " ; " + row);
+        //System.out.println("Content: " + currentField + " ; " + row);
         switch (row) {
             case 0: //text
                 currentEntry.setDescription(currentField);
@@ -156,23 +162,59 @@ public class OnePasswordCVSImporter {
      */
     private void addToList() {
                      
-        if (currentEntry.getType().equals(TYPE_LOGIN)) {
-            listLogin.add(currentEntry);
-            return;
+        if (!isEmptyEntry()) {
+        
+            if (currentEntry.getType().equals(TYPE_LOGIN)) {
+                listLogin.add(currentEntry);
+                return;
+            }
+
+            if (currentEntry.getType().equals(TYPE_PASSWORD)) {
+                listPasswords.add(currentEntry);
+                return;
+            }
+
+            if (currentEntry.getType().equals(TYPE_SOFTWARE_LICENSE)) {
+                listSoftware.add(currentEntry);
+                return;
+            }               
+
+            listSecureNotes.add(currentEntry);        
         }
-        
-        if (currentEntry.getType().equals(TYPE_PASSWORD)) {
-            listPasswords.add(currentEntry);
-            return;
-        }
-        
-        if (currentEntry.getType().equals(TYPE_SOFTWARE_LICENSE)) {
-            listSoftware.add(currentEntry);
-            return;
-        }               
-        
-        listSecureNotes.add(currentEntry);        
     }
+    
+    /**
+     * Sorts a given list with entries
+     * @param list 
+     */
+    private void sortList(List<OnePasswordEntry> list) {
+        Collator collator = Collator.getInstance();
+        
+        for (int i = list.size() - 1; i > 1; i--) {                        
+            for (int x = 0; x < i - 1; x++) {
+                if (collator.compare(list.get(x).getName(), list.get(x+1).getName()) > 0) {
+                    Collections.swap(list, x, x+1);
+                }
+            }
+        }
+    }
+
+    /**
+     * checks if an extry is more or less empty
+     * @return 
+     */
+    private boolean isEmptyEntry() {
+        boolean empty = true;
+        
+        if (!currentEntry.getName().equals("")) empty=false;
+        if (!currentEntry.getDescription().equals("")) empty=false;
+        if (!currentEntry.getPassword().equals("")) empty=false;
+        if (!currentEntry.getUrl().equals("")) empty=false;
+        if (!currentEntry.getUsername().equals("")) empty=false;
+        
+        return empty;
+    }
+           
 
     public List<OnePasswordEntry> getListSecureNotes() {
         return listSecureNotes;
@@ -188,8 +230,5 @@ public class OnePasswordCVSImporter {
 
     public List<OnePasswordEntry> getListLogin() {
         return listLogin;
-    }
-    
-    
-       
+    }    
 }

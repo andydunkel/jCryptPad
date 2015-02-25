@@ -941,9 +941,7 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
         } catch (Exception e)
         {
             //
-        }
-
-        
+        }        
         
         int returnval;
         
@@ -975,10 +973,14 @@ public class MainWindow extends javax.swing.JFrame implements IObserver{
 	    
 	    //user choosed a file
 	    if(returnval == JFileChooser.APPROVE_OPTION) 
-	    {		    	
-                
+	    {		    	    
+               String fileName = chooser.getSelectedFile().getAbsolutePath();
                
-               saveFile(chooser.getSelectedFile().getAbsolutePath());	    
+               if (!fileName.endsWith("." + IConsts.FILE_EXT)) {
+                   fileName += "." + IConsts.FILE_EXT;
+               }
+               
+               saveFile(fileName);	    
             }
         } else
         {

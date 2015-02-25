@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>D:\svn\jCryptPad\project\dist\jCryptPad.jar</jar>
-  <outfile>D:\svn\jCryptPad\setup\jCryptPad.exe</outfile>
+  <jar>e:\svn\jCryptPad\project\dist\jCryptPad.jar</jar>
+  <outfile>e:\svn\jCryptPad\setup\jCryptPad.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -13,7 +13,7 @@
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon>D:\svn\jCryptPad\resources\icon\jCryptPad.ico</icon>
+  <icon>e:\svn\jCryptPad\resources\icon\jCryptPad.ico</icon>
   <jre>
     <path></path>
     <bundledJre64Bit>false</bundledJre64Bit>
